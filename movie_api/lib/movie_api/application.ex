@@ -4,8 +4,6 @@ defmodule MovieApi.Application do
   require Logger
 
   def start(_type, _args) do
-    import Supervisor.Spec
-
     children = [
       # Adding cowboy in the children processes.
       {Plug.Cowboy, scheme: :http, plug: Endpoints, options: [port: port()]},
@@ -13,7 +11,7 @@ defmodule MovieApi.Application do
       # We connect to MongoDB and give the name database
       # The process will be accessible inside the project with the name database
       # instead of its pid.
-      worker(Mongo, [[name: :database, database: database(), pool_size: 2]])
+      %{id: Mongo, start: {Mongo, :start_link, [[name: :database, database: database()]]}}
     ]
 
     opts = [strategy: :one_for_one, name: MovieApi.Supervisor]

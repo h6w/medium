@@ -14,7 +14,7 @@ defmodule MovieApi.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger, :mongodb, :poolboy],
+      extra_applications: [:logger, :mongodb_driver, :poolboy],
       mod: {MovieApi.Application, []}
     ]
   end
@@ -22,10 +22,10 @@ defmodule MovieApi.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:mongodb, "~> 0.5.1"},
+      {:mongodb_driver, "~> 1.5.2"},
       {:poolboy, "~> 1.5.2"},
-      {:plug_cowboy, "~> 2.2.1"},
-      {:jason, "~> 1.2.0"}
+      {:plug_cowboy, "~> 2.7.3"},
+      {:jason, "~> 1.4.4"}
     ]
   end
 end

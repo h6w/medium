@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 config :movie_api, port: 5000
 

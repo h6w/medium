@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 # The server will run on this port.
 config :movie_api, port: 8000

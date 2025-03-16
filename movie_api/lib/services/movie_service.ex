@@ -1,21 +1,30 @@
 defmodule Services.MovieService do
+  require Logger
 
   alias Repository.MovieRepository
 
   # Getting all the movies.
   def get_all_movies() do
-    movies = MovieRepository.list()
-    # We transform the movies to a list.
-    movies = movies
-             |> Enum.map(fn (%{"_id" => id} = m) ->
-                              # Transforming the BSON ObjectId to string (binary)
-                              id = BSON.ObjectId.encode!(id)
+    cursor = MovieRepository.list()
+    result = case cursor do
+      {:error, error} ->
+        Logger.info("Error: #{inspect error}")
+        {:error, error}
 
-                              # Encoding the map to json.
-                              Jason.encode!(%{ m | "_id" => id })
-                         end)
+      _ ->
+        # We transform the movies to a list.
+        movies = cursor
+                 |> Enum.map(fn (%{"_id" => id} = m) ->
+                                  # Transforming the BSON ObjectId to string (binary)
+                                  id = BSON.ObjectId.encode!(id)
 
-    {:ok, movies}
+                                  # Encoding the map to json.
+                                  Jason.encode!(%{ m | "_id" => id })
+                             end)
+        
+        {:ok, movies}
+    end
+    result
   end
 
   # Getting a movie by it's ID.
